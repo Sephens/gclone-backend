@@ -2,8 +2,11 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+
 const dbConnect = require("./db/dbConnect");
 const User = require("./db/userModel");
+const auth = require("./auth");
 
 // execute the database connection
 dbConnect();
@@ -30,6 +33,12 @@ app.get("/", (request, response, next) => {
   response.json({ message: "Hey! This is your server response!" });
   next();
 });
+
+// authentication endpoint
+app.get("/auth-endpoint", auth, (request, response) => {
+  response.json({ message: "You are authorized" });
+});
+
 
 //Create a register endpoint
 app.post("/register", (request, response) => {
